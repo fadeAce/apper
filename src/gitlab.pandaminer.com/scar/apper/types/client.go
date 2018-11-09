@@ -1,9 +1,13 @@
-package client
+package types
 
-import "sync"
+import (
+	"sync"
+	"github.com/nats-io/go-nats"
+)
 
 type Notifier struct {
 	sync.RWMutex
+	Conn *nats.Conn
 }
 
 func NewNotifier() *Notifier {
@@ -13,6 +17,6 @@ func NewNotifier() *Notifier {
 
 func (n *Notifier) Notify(key string, data []byte) {
 	n.Lock()
-	conn.Publish("NOTIFY."+key, data)
+	n.Conn.Publish("NOTIFY."+key, data)
 	n.Unlock()
 }

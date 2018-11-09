@@ -1,12 +1,12 @@
 package core
 
-import "gitlab.pandaminer.com/scar/apper/client"
+import "gitlab.pandaminer.com/scar/apper/types"
 
 // this package unit is for executors to exec pipes
 // then assemble all data and make a transaction to store them
 
 // important interface for starting s pool
-func StartPool(sum int, notifier *client.Notifier) {
+func StartPool(sum int, notifier *types.Notifier) {
 	// create pipes step.1
 	//
 

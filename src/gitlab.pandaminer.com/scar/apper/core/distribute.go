@@ -15,15 +15,10 @@ func Distribute(m *nats.Msg) {
 		// add task to cushion
 		sitemap := cmd.Configs
 		task := generate(sitemap)
-		task.matchPIP()
-		task.run()
+		panel.pending(task)
 	case _const.CMD_STOP:
 
 	case _const.CMD_LS:
 
 	}
-}
-
-func readConfig() {
-
 }

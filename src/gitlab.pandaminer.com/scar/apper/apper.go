@@ -29,7 +29,7 @@ func Start(conf *typ.ApperConf) error {
 	err = client.Listen(shutCh, apper)
 
 	// start notifier                   -- step.2
-	notifier := client.NewNotifier()
+	notifier := typ.NewNotifier()
 
 	// start Executors cushion and pool -- step.3
 	core.StartPool(_const.DEFAULT_SUM_PIPE, notifier)
