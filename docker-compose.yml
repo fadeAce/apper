@@ -1,0 +1,30 @@
+version: "3.4"
+
+services:
+  postgres:
+    container_name: apper_postgres
+    hostname: postgres
+    image: postgres:9.5
+    restart: always
+    volumes:
+    - ./docker/postgres/create_db.sh:/docker-entrypoint-initdb.d/20-create_db.sh
+    environment:
+      POSTGRES_PASSWORD: panda@123
+      POSTGRES_USER: apper
+    networks:
+    - internal
+    ports:
+    - 5432:5432
+  nats:
+    container_name: apper_nats
+    hostname: nats
+    image: nats
+    restart: always
+    networks:
+    - internal
+    ports:
+    - 4222:4222
+
+networks:
+  internal:
+    attachable: true

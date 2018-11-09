@@ -1,0 +1,221 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/PuerkitoBio/goquery",
+			"repository": "https://github.com/PuerkitoBio/goquery",
+			"revision": "2af3d16e2bb8c46efba31b0af1d7ca2eac7fcc23",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/abiosoft/ishell",
+			"repository": "https://github.com/abiosoft/ishell",
+			"revision": "2ef49f1f59a2f28d172a09429e38e06c5d834369",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/abiosoft/readline",
+			"repository": "https://github.com/abiosoft/readline",
+			"revision": "155bce2042db95a783081fab225e74dd879055b0",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/andybalholm/cascadia",
+			"repository": "https://github.com/andybalholm/cascadia",
+			"revision": "680b6a57bda4f657485ad44bdea42342ead737bc",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/antchfx/htmlquery",
+			"repository": "https://github.com/antchfx/htmlquery",
+			"revision": "98389addba3d9d3155171e4135bcbb67ca1740c0",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/antchfx/xmlquery",
+			"repository": "https://github.com/antchfx/xmlquery",
+			"revision": "98cdbc3221ed492316cca5a4711e48ee0ca0dc9a",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/antchfx/xpath",
+			"repository": "https://github.com/antchfx/xpath",
+			"revision": "3de91f3991a1af6e495d49c9218318b5544b20e3",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/davecgh/go-spew/spew",
+			"repository": "https://github.com/davecgh/go-spew",
+			"revision": "d8f796af33cc11cb798c1aaeb27a4ebc5099927d",
+			"branch": "master",
+			"path": "/spew"
+		},
+		{
+			"importpath": "github.com/fatih/color",
+			"repository": "https://github.com/fatih/color",
+			"revision": "3f9d52f7176a6927daacff70a3e8d1dc2025c53e",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/flynn-archive/go-shlex",
+			"repository": "https://github.com/flynn-archive/go-shlex",
+			"revision": "3f9db97f856818214da2e1057f8ad84803971cff",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/gobwas/glob",
+			"repository": "https://github.com/gobwas/glob",
+			"revision": "e7a84e9525fe90abcda167b604e483cc959ad4aa",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/gocolly/colly",
+			"repository": "https://github.com/gocolly/colly",
+			"revision": "8be5ab8a22a43ed412d474d7c4ce2cd9fdba1277",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/golang/protobuf/proto",
+			"repository": "https://github.com/golang/protobuf",
+			"revision": "1918e1ff6ffd2be7bed0553df8650672c3bfe80d",
+			"branch": "master",
+			"path": "/proto"
+		},
+		{
+			"importpath": "github.com/golang/protobuf/ptypes/any",
+			"repository": "https://github.com/golang/protobuf",
+			"revision": "1918e1ff6ffd2be7bed0553df8650672c3bfe80d",
+			"branch": "master",
+			"path": "/ptypes/any"
+		},
+		{
+			"importpath": "github.com/jawher/mow.cli",
+			"repository": "https://github.com/jawher/mow.cli",
+			"revision": "be8a14f11c9d056881a23b1492b7995778fae6d0",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/kennygrant/sanitize",
+			"repository": "https://github.com/kennygrant/sanitize",
+			"revision": "06ec0d0dbcd497d01e5189b16f5263f712e61a8e",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/konsorten/go-windows-terminal-sequences",
+			"repository": "https://github.com/konsorten/go-windows-terminal-sequences",
+			"revision": "5c8c8bd35d3832f5d134ae1e1e375b69a4d25242",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/lestrrat/go-file-rotatelogs",
+			"repository": "https://github.com/lestrrat/go-file-rotatelogs",
+			"revision": "d3151e2a480fdcd05fb97102f5310a47d96274c4",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/lestrrat/go-strftime",
+			"repository": "https://github.com/lestrrat/go-strftime",
+			"revision": "ba3bf9c1d0421aa146564a632931730344f1f9f1",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/lib/pq",
+			"repository": "https://github.com/lib/pq",
+			"revision": "9eb73efc1fcc404148b56765b0d3f61d9a5ef8ee",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/mattn/go-colorable",
+			"repository": "https://github.com/mattn/go-colorable",
+			"revision": "efa589957cd060542a26d2dd7832fd6a6c6c3ade",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/mattn/go-isatty",
+			"repository": "https://github.com/mattn/go-isatty",
+			"revision": "3fb116b820352b7f0c281308a4d6250c22d94e27",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/nats-io/go-nats",
+			"repository": "https://github.com/nats-io/go-nats",
+			"revision": "733a0ccd46637f8c4402bfab5f20029f4429db3e",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/nats-io/nuid",
+			"repository": "https://github.com/nats-io/nuid",
+			"revision": "3024a71c3cbe30667286099921591e6fcc328230",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/pkg/errors",
+			"repository": "https://github.com/pkg/errors",
+			"revision": "059132a15dd08d6704c67711dae0cf35ab991756",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/pmezard/go-difflib/difflib",
+			"repository": "https://github.com/pmezard/go-difflib",
+			"revision": "792786c7400a136282c1664665ae0a8db921c6c2",
+			"branch": "master",
+			"path": "/difflib"
+		},
+		{
+			"importpath": "github.com/rifflock/lfshook",
+			"repository": "https://github.com/rifflock/lfshook",
+			"revision": "b9218ef580f59a2e72dad1aa33d660150445d05a",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/saintfish/chardet",
+			"repository": "https://github.com/saintfish/chardet",
+			"revision": "3af4cd4741ca4f3eb0c407c034571a6fb0ea529c",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/sirupsen/logrus",
+			"repository": "https://github.com/sirupsen/logrus",
+			"revision": "fd2308367ebd427ec910c1ac82f3805db3de1918",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/stretchr/testify/assert",
+			"repository": "https://github.com/stretchr/testify",
+			"revision": "04af85275a5c7ac09d16bb3b9b2e751ed45154e5",
+			"branch": "master",
+			"path": "/assert"
+		},
+		{
+			"importpath": "github.com/stretchr/testify/require",
+			"repository": "https://github.com/stretchr/testify",
+			"revision": "04af85275a5c7ac09d16bb3b9b2e751ed45154e5",
+			"branch": "master",
+			"path": "/require"
+		},
+		{
+			"importpath": "github.com/temoto/robotstxt",
+			"repository": "https://github.com/temoto/robotstxt",
+			"revision": "97ee4a9ee6ea01ed0bbf0325dd789f74cac6cb94",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/tidwall/gjson",
+			"repository": "https://github.com/tidwall/gjson",
+			"revision": "081192fa2e471ddff3ec98a3cc04fecfd031ed57",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/tidwall/match",
+			"repository": "https://github.com/tidwall/match",
+			"revision": "1731857f09b1f38450e2c12409748407822dc6be",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/yaml.v2",
+			"repository": "https://gopkg.in/yaml.v2",
+			"revision": "5420a8b6744d3b0345ab293f6fcba19c978f1183",
+			"branch": "master"
+		}
+	]
+}

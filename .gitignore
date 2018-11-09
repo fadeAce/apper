@@ -1,0 +1,7 @@
+.idea/*
+*.iml
+vendor/pkg/*
+vendor/src/*
+pkg/*
+*.log
+log/*

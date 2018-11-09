@@ -1,0 +1,5 @@
+# postgreSQL db
+database: "postgres://apper:panda@123@47.99.72.199:5432/apper?sslmode=disable"
+
+# NATS
+nats: "47.99.72.199:4222"

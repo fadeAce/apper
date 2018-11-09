@@ -1,0 +1,11 @@
+workspace:
+  base: /go
+  path: src/gitlab.pandaminer.com/scar/apper.git
+
+pipeline:
+  build:
+    image: golang:1.9
+    commands:
+    - pwd
+    - go env
+    - go version
