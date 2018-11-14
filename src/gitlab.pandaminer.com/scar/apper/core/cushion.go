@@ -6,7 +6,8 @@ import (
 	"gitlab.pandaminer.com/scar/apper/types"
 	"fmt"
 	"gitlab.pandaminer.com/scar/apper/const"
-	"gitlab.pandaminer.com/scar/apper"
+	"golang.org/x/net/context"
+	"gitlab.pandaminer.com/scar/apper/storage"
 )
 
 var log = logger.Log
@@ -63,11 +64,12 @@ type executor interface {
 	run() map[*pipe]*DataUnit
 }
 
+func (p *pendCentre) Init(conf *types.ApperConf) {
+	p.queue = make(chan *task, conf.CushionSize)
+}
+
 // pending tasks onto the panel
 func (p *pendCentre) Pending(tsk *task) {
-	if p.queue == nil {
-		p.queue = make(chan *task, apper.Apper.Cfg.CushionSize)
-	}
 	p.queue <- tsk
 }
 
@@ -77,11 +79,11 @@ func (*pendCentre) pop() (*task) {
 }
 
 // generate task from configuration
-func Generate(conf types.ConfJ) *task {
+func Generate(ctx context.Context, conf types.ConfJ, database *storage.Database) *task {
 	// step.1 generate txnID
 	// seq as a sequence num in DB
 	var seq int
-	seq = apper.Apper.Seq()
+	seq = database.CoutSeq(ctx)
 	txnID := _const.TASK_TXN_PREFFIX + fmt.Sprintf("%d", seq)
 	fragments := fragments{data: make(map[int]fragment)}
 	counter := _const.DEFAULT_SUM_VALUE

@@ -5,6 +5,8 @@ import (
 	"gitlab.pandaminer.com/scar/apper/const"
 	"gitlab.pandaminer.com/scar/apper/types"
 	"gitlab.pandaminer.com/scar/apper/logger"
+	"encoding/json"
+	"gitlab.pandaminer.com/scar/apper/core"
 )
 
 var log = logger.Log
@@ -14,7 +16,6 @@ var sum = _const.DEFAULT_SUM_VALUE
 var conn *nats.Conn
 
 var closeCh chan interface{}
-
 
 // Listen takes advantage of broker to make a connection between client-sdk and
 // apper server.
@@ -28,9 +29,23 @@ func Listen(ch chan interface{}, apper *types.Apperserver) (err error) {
 		return err
 	}
 	// use Distribute method to finish callback
-	nc.Subscribe("cmd", Distribute)
+	nc.Subscribe("cmd", func(msg *nats.Msg) {
+		cmd := types.Command{}
+		json.Unmarshal(msg.Data, &cmd)
+		switch cmd.Cmd {
+		case _const.CMD_START:
+			// add task to cushion
+			sitemap := cmd.Configs
+			// todo: sitemap - test
+			task := core.Generate(apper.Ctx, sitemap, apper.Database)
+			// todo: Pending
+			core.Panel.Init(apper.Cfg)
+			core.Panel.Pending(task)
+		case _const.CMD_STOP:
+		case _const.CMD_LS:
+		}
+	})
 	// wait for signal to kill
 	<-ch
 	return
 }
-
