@@ -12,6 +12,7 @@ type CmdJSON struct {
 }
 
 type Apperserver struct {
+	Quit func()
 	sync.RWMutex
 	Cfg      *ApperConf
 	Ctx      context.Context

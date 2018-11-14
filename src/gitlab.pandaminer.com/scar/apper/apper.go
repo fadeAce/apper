@@ -7,6 +7,7 @@ import (
 	"gitlab.pandaminer.com/scar/apper/logger"
 	"gitlab.pandaminer.com/scar/apper/core"
 	"gitlab.pandaminer.com/scar/apper/const"
+	"context"
 )
 
 var log = logger.Log
@@ -15,6 +16,8 @@ var Apper *typ.Apperserver
 
 func loadNewApper() (err error, apper *typ.Apperserver) {
 	apper = &typ.Apperserver{}
+	ctx := context.Background()
+	apper.Ctx, apper.Quit = context.WithCancel(ctx)
 	return
 }
 
@@ -54,7 +57,6 @@ func Start(conf *typ.ApperConf) error {
 }
 
 func StartService(notifier *typ.Notifier) {
-
 	// loop
 	for {
 		if false {
@@ -74,16 +76,4 @@ func StartService(notifier *typ.Notifier) {
 		txID := task.Done()
 		log.Info("task ", txID, " is done !")
 	}
-
-	//
-	//// collect data to cache & persist
-	//
-	////
-	//daemonCtx := context.Background()
-	//ctx, cancel := context.WithCancel(daemonCtx)
-	//go func(ctx context.Context) {
-	//	// manufacture processing routine
-	//	ctx.Done()
-	//}(ctx)
-	//fmt.Print(cancel)
 }
