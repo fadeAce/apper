@@ -19,6 +19,6 @@ type SiteJ struct {
 }
 
 type Command struct {
-	 Configs ConfJ  `json:"config"`
+	Configs ConfJ  `json:"config"`
 	Cmd     string `json:"cmd"`
 }

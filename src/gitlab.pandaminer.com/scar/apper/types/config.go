@@ -5,7 +5,10 @@ type Conf struct {
 }
 
 type ApperConf struct {
-	Database string `yaml:"database"`
+	Database       string `yaml:"database"`
+	Nats           string `yaml:"nats"`
+	CushionSize    int    `yaml:"task_pool"`
+	ThreadPoolSize int    `yaml:"th_pool"`
 }
 
 type Single struct {

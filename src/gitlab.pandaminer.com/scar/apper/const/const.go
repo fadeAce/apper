@@ -12,6 +12,7 @@ const (
 )
 
 const (
-	KEY_CONFIG  = "config"
-	PIP_PREFFIX = "pip_"
+	TASK_TXN_PREFFIX = "TXN_"
+	KEY_CONFIG       = "config"
+	PIP_PREFFIX      = "pip_"
 )

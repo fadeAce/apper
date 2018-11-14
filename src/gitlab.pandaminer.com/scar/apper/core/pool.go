@@ -13,8 +13,21 @@ var PipPool = func() *pool {
 }()
 
 // algorithm for matching the num of pipes to a given task
-func (*task) matchPIP() ([]*pipe) {
+// what returned are threads bond to selected task
+// if no pipe is spared this invoke would be blocked
+func (*task) MatchPIP() (map[int]*pipe) {
 	return nil
+}
+
+func (*task) release() {
+
+}
+
+// task done involved a process that inject result from
+// fragments to cache layer.
+func (t *task) Done() string {
+	t.release()
+	return t.txID
 }
 
 func (*pipe) release() {

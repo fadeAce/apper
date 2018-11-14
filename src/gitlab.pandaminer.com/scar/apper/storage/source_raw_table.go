@@ -8,6 +8,8 @@ import (
 const sourceSchema = `
 CREATE SEQUENCE IF NOT EXISTS source_stream_id;
 
+CREATE SEQUENCE IF NOT EXISTS transaction_stream_id;
+
 CREATE TABLE IF NOT EXISTS source_raw (
 	id 					BIGINT 	PRIMARY KEY DEFAULT nextval('source_stream_id'),
 	transaction_id 		TEXT 	NOT NULL,
@@ -28,10 +30,14 @@ const selectSourceByUIDSQL = "" +
 const selectAllSQL = "" +
 	"SELECT content, typ FROM source_raw where transaction_id = $1"
 
+const selectTxnSeqSQL = "" +
+	"SELECT nextval('transaction_stream_id')"
+
 type scrapperStatements struct {
 	insertRawStmt         *sql.Stmt
 	selectSourceByUIDStmt *sql.Stmt
 	selectAllSourceStmt   *sql.Stmt
+	selectTxnSeqStmt      *sql.Stmt
 }
 
 func (s *scrapperStatements) getSchema() string {
@@ -52,6 +58,9 @@ func (s *scrapperStatements) prepare(db *sql.DB) (err error) {
 	if s.selectAllSourceStmt, err = db.Prepare(selectAllSQL); err != nil {
 		return
 	}
+	if s.selectTxnSeqStmt, err = db.Prepare(selectTxnSeqSQL); err != nil {
+		return
+	}
 
 	return
 }
@@ -64,6 +73,11 @@ func (s *scrapperStatements) insertPresence(
 		return nil
 	}
 	return nil
+}
+func (s *scrapperStatements) selectTxnSeq(ctx context.Context) int {
+	var res int
+	s.selectTxnSeqStmt.QueryRowContext(ctx).Scan(&res)
+	return res
 }
 
 //

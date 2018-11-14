@@ -3,3 +3,9 @@ database: "postgres://apper:panda@123@47.99.72.199:5432/apper?sslmode=disable"
 
 # NATS
 nats: "47.99.72.199:4222"
+
+# task pool capacity, it's highly recommend not more than 20
+task_pool: 10
+
+# thread pool capacity, default 200 is enough for tasks in task_pool at recommend configuration
+th_pool: 200

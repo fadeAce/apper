@@ -5,6 +5,7 @@ import (
 	_ "github.com/lib/pq"
 	"fmt"
 	"gitlab.pandaminer.com/scar/apper/logger"
+	"golang.org/x/net/context"
 )
 
 var log = logger.Log
@@ -31,4 +32,9 @@ func NewDatabase(dataSourceName string) (*Database, error) {
 	}
 	log.Info("complete storage setting")
 	return &d, nil
+}
+
+func (d *Database) CoutSeq(ctx context.Context) (seq int) {
+	seq = d.scrapper.selectTxnSeq(ctx)
+	return
 }
