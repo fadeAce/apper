@@ -16,3 +16,9 @@ const (
 	KEY_CONFIG       = "config"
 	PIP_PREFFIX      = "pip_"
 )
+
+const (
+	TYPE_JSON    = "json"
+	TYPE_HTML    = "html"
+	TYPE_INVALID = "else"
+)

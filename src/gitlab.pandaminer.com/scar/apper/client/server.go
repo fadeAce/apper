@@ -37,7 +37,7 @@ func Listen(ch chan interface{}, apper *types.Apperserver) (err error) {
 			// add task to cushion
 			sitemap := cmd.Configs
 			// todo: sitemap - test
-			task := core.Generate(apper.Ctx, sitemap, apper.Database)
+			task := core.Generate(apper.Ctx, sitemap, apper.Database, apper.Cfg.Timeout)
 			// todo: Pending
 			core.Panel.Init(apper.Cfg)
 			core.Panel.Pending(task)

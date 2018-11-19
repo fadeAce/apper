@@ -9,3 +9,6 @@ task_pool: 10
 
 # thread pool capacity, default 200 is enough for tasks in task_pool at recommend configuration
 th_pool: 200
+
+# timeout duration in second
+time_out: 25

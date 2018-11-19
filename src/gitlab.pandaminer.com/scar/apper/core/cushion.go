@@ -1,13 +1,15 @@
 package core
 
 import (
-	"gitlab.pandaminer.com/scar/apper/logger"
-	"sync"
-	"gitlab.pandaminer.com/scar/apper/types"
 	"fmt"
-	"gitlab.pandaminer.com/scar/apper/const"
+	"sync"
 	"golang.org/x/net/context"
+	"gitlab.pandaminer.com/scar/apper/logger"
+	"gitlab.pandaminer.com/scar/apper/types"
+	"gitlab.pandaminer.com/scar/apper/const"
 	"gitlab.pandaminer.com/scar/apper/storage"
+	"gitlab.pandaminer.com/scar/apper/handler"
+	"time"
 )
 
 var log = logger.Log
@@ -27,7 +29,8 @@ var dataAssemble = func() *dataCentre {
 type task struct {
 	fragments fragments
 	txID      string
-	pips      map[int]*pipe
+	schedule  map[int]bool
+	timeout   time.Duration
 }
 
 // fragments represents segments for task
@@ -60,10 +63,6 @@ type DataUnit struct {
 	Flag bool
 }
 
-type executor interface {
-	run() map[*pipe]*DataUnit
-}
-
 func (p *pendCentre) Init(conf *types.ApperConf) {
 	p.queue = make(chan *task, conf.CushionSize)
 }
@@ -79,7 +78,9 @@ func (*pendCentre) pop() (*task) {
 }
 
 // generate task from configuration
-func Generate(ctx context.Context, conf types.ConfJ, database *storage.Database) *task {
+func Generate(
+	ctx context.Context, conf types.ConfJ, database *storage.Database, timeout int,
+) *task {
 	// step.1 generate txnID
 	// seq as a sequence num in DB
 	var seq int
@@ -90,7 +91,11 @@ func Generate(ctx context.Context, conf types.ConfJ, database *storage.Database)
 	for site, config := range conf.Sites {
 		for _, single := range config.Single {
 			f := fragment{}
-			f.single = types.Single{single.Type, single.Rule, single.Key}
+			f.single = types.Single{
+				Type: single.Type,
+				Rule: single.Rule,
+				Key:  single.Key,
+			}
 			f.motherSite = site
 			f.taken = false
 			fragments.data[counter] = f
@@ -98,17 +103,98 @@ func Generate(ctx context.Context, conf types.ConfJ, database *storage.Database)
 		}
 	}
 	fragments.sum = counter
-	return &task{fragments, txnID, nil}
+	return &task{fragments, txnID, nil, time.Duration(timeout) * time.Second}
 }
 
 func PopTask() *task {
-	return nil
+	return <-Panel.queue
 }
 
 func (t *task) TransactionID() string {
 	return t.txID
 }
 
+// important core logic unit that contains fault tolerance
+/*
+			   pip ---+ task +------- finish
+				+		  |				+
+				|		  |				|
+				|		  +				|
+				|		fragment ---+ done
+				|						|
+				|						|
+				|						+
+				+----------------- in progress
+*/
 func (t *task) RunPip(pip *pipe) {
+	pip.timeout = t.timeout
+	// forbid to run unmatched pipe
+	if pip.txnID != t.txID {
+		return
+	}
+	// quit tag marking if the task has been done
+	var quit bool
+	// fetch a fragment that are free to be load
+	for i := 0; i < t.fragments.sum; i++ {
+		if t.fragments.data[i].taken {
+			continue
+		}
+		pip.fragmentSeq = i
+		mid := t.fragments.data[i]
+		mid.taken = true
+		t.fragments.data[i] = mid
+		quit = false
+		break
+	}
+	if quit {
+		return
+	}
+	// once been taken run it in using colly , and save the result to cache layer
+	go func() {
+		// synchronised fetching data
+		tar, _ := t.fetchFragment(pip.fragmentSeq)
+		// inside run it's a synchronised processing
+		pip.run(tar)
+		// it's not over yet this pip would fetch a sequenced task then
+		t.RunPip(pip)
+	}()
+}
 
+// return the copy of single and if it's been taken by other pipe
+func (t *task) fetchFragment(i int) (frag fragment, taken bool) {
+	return t.fragments.data[i], t.fragments.data[i].taken
+}
+
+func (p *pipe) run(single fragment) {
+	log.Debug("pip ", p.fragmentSeq, " begin to run ", p.txnID)
+	// in using colly as core lib in fetching elements
+	// this for showing configs
+	url := single.motherSite
+	path := single.single.Rule
+	typ := single.single.Type
+	key := single.single.Key
+	// result data
+	var jsonRes []byte
+	var htmlRes []string
+	var err error
+	// using colly handler in handler package
+	switch typ {
+	case _const.TYPE_HTML:
+		htmlRes, err = handler.MatchHTML(url, path, p.fragmentSeq, p.timeout)
+	case _const.TYPE_JSON:
+		jsonRes, err = handler.MatchJSON(url, path, p.fragmentSeq, p.timeout)
+	}
+	if err != nil {
+		// todo : go report this pipe went wrong and mark it
+		CachingFailure(key, p.txnID, typ)
+	}
+	// todo : into cache layer
+	Caching(key, p.txnID, typ, combine(jsonRes, htmlRes))
+}
+
+func combine(bytes []byte, strings []string) interface{} {
+	if len(bytes) == _const.DEFAULT_SUM_VALUE {
+		return strings
+	}
+	return bytes
 }

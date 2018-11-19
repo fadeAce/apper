@@ -9,6 +9,7 @@ type ApperConf struct {
 	Nats           string `yaml:"nats"`
 	CushionSize    int    `yaml:"task_pool"`
 	ThreadPoolSize int    `yaml:"th_pool"`
+	Timeout        int    `yaml:"time_out"`
 }
 
 type Single struct {

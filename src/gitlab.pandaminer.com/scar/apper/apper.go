@@ -51,12 +51,12 @@ func Start(conf *typ.ApperConf) error {
 	core.StartPool(ths)
 
 	// start pool consuming service todo: WIP    -- step.4
-	StartService(notifier)
+	StartService(notifier, conf)
 
 	return err
 }
 
-func StartService(notifier *typ.Notifier) {
+func StartService(notifier *typ.Notifier, conf *typ.ApperConf) {
 	// loop
 	for {
 		if false {
