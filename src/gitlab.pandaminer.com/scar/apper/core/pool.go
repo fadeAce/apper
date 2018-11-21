@@ -117,6 +117,8 @@ func (pip *pipe) release() {
 	pip.timeout = _const.DEFAULT_TIMEOUT * time.Second
 }
 
-func (*pool) addPip(pip *pipe) {
-
+func (p *pool) addPip(pip *pipe) {
+	p.Lock()
+	defer p.Unlock()
+	p.pips[pip.pipSeq] = pip
 }

@@ -9,6 +9,7 @@ import (
 	"gitlab.pandaminer.com/scar/apper/const"
 	"gitlab.pandaminer.com/scar/apper/storage"
 	"gitlab.pandaminer.com/scar/apper/handler"
+	"sync"
 )
 
 var log = logger.Log
@@ -21,6 +22,7 @@ var Panel = func() *pendCentre {
 
 // type task represent a task that match a configuration
 type task struct {
+	sync.RWMutex
 	fragments fragments
 	txID      string
 	schedule  map[int]bool
@@ -142,6 +144,9 @@ func (t *task) RunPip(pip *pipe) {
 		break
 	}
 	if quit {
+		pip.state = _const.PIP_DONE
+		// it's safety to check done signal here
+		t.check()
 		return
 	}
 	// once been taken run it in using colly , and save the result to cache layer
@@ -161,6 +166,26 @@ func (t *task) fetchFragment(i int) (frag fragment, taken bool) {
 }
 func (t *task) Store() {
 
+}
+
+func (t *task) check() {
+	t.RLock()
+	defer t.RUnlock()
+	PipPool.Lock()
+	txID := t.txID
+	var tag bool
+	for seq,_:=range t.schedule{
+		if PipPool.pips[seq].state == _const.PIP_DONE{
+			tag = true
+			break
+		}
+	}
+	PipPool.Unlock()
+	if !tag{
+		cacheCenter.Lock()
+		close(cacheCenter.data[txID].ch)
+		cacheCenter.Unlock()
+	}
 }
 
 func (p *pipe) run(single fragment) {
