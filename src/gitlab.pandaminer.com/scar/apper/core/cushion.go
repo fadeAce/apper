@@ -89,7 +89,7 @@ func Generate(
 		}
 	}
 	fragments.sum = counter
-	return &task{fragments, txnID, make(map[int]bool), time.Duration(timeout) * time.Second}
+	return &task{fragments: fragments, txID: txnID, schedule: make(map[int]bool), timeout: time.Duration(timeout) * time.Second}
 }
 
 func PopTask() *task {
@@ -174,14 +174,14 @@ func (t *task) check() {
 	PipPool.Lock()
 	txID := t.txID
 	var tag bool
-	for seq,_:=range t.schedule{
-		if PipPool.pips[seq].state == _const.PIP_DONE{
+	for seq, _ := range t.schedule {
+		if PipPool.pips[seq].state == _const.PIP_DONE {
 			tag = true
 			break
 		}
 	}
 	PipPool.Unlock()
-	if !tag{
+	if !tag {
 		cacheCenter.Lock()
 		close(cacheCenter.data[txID].ch)
 		cacheCenter.Unlock()
