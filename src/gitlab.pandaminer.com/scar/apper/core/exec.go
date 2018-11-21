@@ -7,13 +7,9 @@ package core
 func StartPool(sum int) {
 	// create pipes step.1
 	for i := 0; i < sum; i++ {
-		p := &pipe{}
+		p := &pipe{pipSeq:i}
 		PipPool.addPip(p)
 	}
-}
-
-func (*task) run() map[*pipe]*DataUnit {
-	return nil
 }
 
 // when task is attempt to store a assemble

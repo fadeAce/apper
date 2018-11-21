@@ -14,11 +14,12 @@ type pool struct {
 type pipe struct {
 	sync.RWMutex
 	// if it's ready for taken
-	state       bool
-	txnID       string
+	state bool
+	txnID string
 	// this for what fragment it caught with
 	fragmentSeq int
-	timeout time.Duration
+	pipSeq      int
+	timeout     time.Duration
 }
 
 var PipPool = func() *pool {

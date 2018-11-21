@@ -2,13 +2,13 @@ package core
 
 import (
 	"fmt"
-	"golang.org/x/net/context"
+	"time"
+	"context"
 	"gitlab.pandaminer.com/scar/apper/logger"
 	"gitlab.pandaminer.com/scar/apper/types"
 	"gitlab.pandaminer.com/scar/apper/const"
 	"gitlab.pandaminer.com/scar/apper/storage"
 	"gitlab.pandaminer.com/scar/apper/handler"
-	"time"
 )
 
 var log = logger.Log
@@ -91,7 +91,18 @@ func Generate(
 }
 
 func PopTask() *task {
-	return <-Panel.queue
+	// this would initialize memory in cache layer
+	// it's better to do it in PopTask cause it's dynamic
+	task := <-Panel.queue
+	cacheCenter.Lock()
+	defer cacheCenter.Unlock()
+	cacheCenter.data[task.txID] = cacheUnit{
+		ch:    make(chan interface{}),
+		sum:   task.fragments.sum,
+		unit:  make(map[int]unit),
+		ready: false,
+	}
+	return task
 }
 
 func (t *task) TransactionID() string {
@@ -171,12 +182,12 @@ func (p *pipe) run(single fragment) {
 	case _const.TYPE_JSON:
 		jsonRes, err = handler.MatchJSON(url, path, p.fragmentSeq, p.timeout)
 	}
+	fragSeq := p.fragmentSeq
+	pipSeq := p.pipSeq
 	if err != nil {
-		// todo : go report this pipe went wrong and mark it
-		CachingFailure(key, p.txnID, typ)
+		CachingFailure(fragSeq, pipSeq, key, p.txnID, typ)
 	}
-	// todo : into cache layer
-	Caching(key, p.txnID, typ, combine(jsonRes, htmlRes))
+	Caching(fragSeq, pipSeq, key, p.txnID, typ, combine(jsonRes, htmlRes))
 }
 
 func combine(bytes []byte, strings []string) interface{} {

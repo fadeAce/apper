@@ -3,6 +3,8 @@ package _const
 const (
 	DEFAULT_SUM_PIPE  = 200
 	DEFAULT_SUM_VALUE = iota
+	CACHING_STATE_NORMAL
+	CACHING_STATE_ERROR
 )
 
 const (
