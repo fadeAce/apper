@@ -13,3 +13,17 @@
     gb vendor restore
 
 ###### Finally , add $PROJECT_PATH/vendor and $PROJECT_PATH to $GOPATH
+
+
+```
+pip ---+ task +------- finish
+ +		  |				+
+ |		  |				|
+ |		  +				|
+ |		fragment ---+ done
+ |						|
+ |						|
+ |						+
+ +----------------- in progress
+```
+
