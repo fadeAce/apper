@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"sync"
 	"golang.org/x/net/context"
 	"gitlab.pandaminer.com/scar/apper/logger"
 	"gitlab.pandaminer.com/scar/apper/types"
@@ -18,11 +17,6 @@ var log = logger.Log
 var Panel = func() *pendCentre {
 	pc := pendCentre{}
 	return &pc
-}()
-
-var dataAssemble = func() *dataCentre {
-	dc := &dataCentre{}
-	return dc
 }()
 
 // type task represent a task that match a configuration
@@ -51,16 +45,6 @@ type fragment struct {
 // core concept of cushion area for tasks
 type pendCentre struct {
 	queue chan *task
-}
-
-// type dataCentre represent the result assembled of all task
-type dataCentre struct {
-	sync.RWMutex
-	dataAssemble map[*pipe]*DataUnit
-}
-
-type DataUnit struct {
-	Flag bool
 }
 
 func (p *pendCentre) Init(conf *types.ApperConf) {
@@ -163,6 +147,9 @@ func (t *task) RunPip(pip *pipe) {
 // return the copy of single and if it's been taken by other pipe
 func (t *task) fetchFragment(i int) (frag fragment, taken bool) {
 	return t.fragments.data[i], t.fragments.data[i].taken
+}
+func (t *task) Store() {
+
 }
 
 func (p *pipe) run(single fragment) {

@@ -6,12 +6,17 @@ import (
 	"github.com/tidwall/gjson"
 	"reflect"
 	"testing"
+	"net/http"
+	"io/ioutil"
+	"strings"
+	"strconv"
 )
 
 type RateS struct {
-	Rate	string
+	Rate string
 }
-testing uupool for making sure the json response
+
+//testing uupool for making sure the json response
 func Test_json(t *testing.T) {
 	c := colly.NewCollector()
 	c.OnHTML("workers", func(e *colly.HTMLElement) {
@@ -31,7 +36,7 @@ func Test_html(t *testing.T) {
 	c := colly.NewCollector()
 	c.OnHTML("div[class='col-lg-3 col-md-4'] div:nth-child(2) ul li:nth-child(3) span", func(e *colly.HTMLElement) {
 		fmt.Println("~~~~~~~~~~~")
-		fmt.Println( e.Text)
+		fmt.Println(e.Text)
 	})
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())
@@ -41,7 +46,6 @@ func Test_html(t *testing.T) {
 	// scraping on https://hackerspaces.org
 	c.Visit("http://dwarfpool.com/eth/address?wallet=0x12bd26dadd552233a86be4a9696f999362953912")
 }
-
 
 func Test_json2(t *testing.T) {
 	c := colly.NewCollector()
@@ -68,9 +72,9 @@ func Test_api(t *testing.T) {
 	c.OnResponse(func(r *colly.Response) { //online.xrB11x36.rate
 		num := gjson.Get(string(r.Body), "workers")
 		fmt.Println(num.String())
-		num2 :=gjson.Parse(num.String())
+		num2 := gjson.Parse(num.String())
 		mpp := num2.Map()
-		for _,v := range  mpp {
+		for _, v := range mpp {
 			fmt.Println(v.Get("alive").Bool())
 			fmt.Println("type:", reflect.TypeOf(v.Get("alive").Bool()))
 		}
@@ -79,4 +83,19 @@ func Test_api(t *testing.T) {
 	})
 	// Start scraping on https://hackerspaces.org
 	c.Visit("http://dwarfpool.com/eth/api?wallet=0x5f51b076339bdbb4b56dbc22e8890125d13b2fdd&email=eth@example.com")
+}
+
+func Test_usd_rmb(t *testing.T) {
+	resp, err := http.Get("http://hq.sinajs.cn/?list=USDCNY")
+	if err != nil {
+		// handle error
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		// handle error
+	}
+	strs := strings.Split(string(body), ",")
+	val, err := strconv.ParseFloat(strs[8], 64)
+	fmt.Println(val)
 }

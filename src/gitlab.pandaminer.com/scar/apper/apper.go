@@ -74,6 +74,10 @@ func StartService(notifier *typ.Notifier, conf *typ.ApperConf) {
 		}
 		// block till it's done
 		txID := task.Done()
+		// done marks the finish of task , and beginning of storage.999
+		task.Store()
+		// notify this work is over through the unified subject.
+		notifier.Notify(txID,nil)
 		log.Info("task ", txID, " is done !")
 	}
 }
