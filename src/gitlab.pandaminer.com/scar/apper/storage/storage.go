@@ -5,7 +5,7 @@ import (
 	_ "github.com/lib/pq"
 	"fmt"
 	"gitlab.pandaminer.com/scar/apper/logger"
-	"golang.org/x/net/context"
+	"context"
 )
 
 var log = logger.Log

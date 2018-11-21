@@ -49,7 +49,7 @@ func (t *task) MatchPIP() (result map[int]*pipe) {
 			// binding txnID to those pipes
 			mid.txnID = t.txID
 			result[index] = mid
-			t.schedule[index]=false
+			t.schedule[index] = false
 			till++
 			if till == sum {
 				break
@@ -87,7 +87,12 @@ func count() (sum int, res map[int]*pipe) {
 }
 
 func (t *task) release() {
-
+	PipPool.Lock()
+	defer PipPool.Unlock()
+	for k, _ := range t.schedule {
+		pip := PipPool.pips[k]
+		pip.release()
+	}
 }
 
 // task done involved a process that inject result from
@@ -105,8 +110,11 @@ func (t *task) Done() string {
 	return t.txID
 }
 
-func (*pipe) release() {
-
+func (pip *pipe) release() {
+	pip.state = _const.PIP_IDLE
+	pip.txnID = ""
+	pip.fragmentSeq = _const.DEFAULT_SUM_VALUE
+	pip.timeout = _const.DEFAULT_TIMEOUT * time.Second
 }
 
 func (*pool) addPip(pip *pipe) {
