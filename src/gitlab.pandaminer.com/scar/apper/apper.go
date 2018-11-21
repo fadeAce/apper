@@ -41,7 +41,7 @@ func Start(conf *typ.ApperConf) error {
 	// start notifier todo: WIP                  -- step.2
 	notifier := typ.NewNotifier()
 
-	// start Executors 			cushion and pool -- step.3
+	// start Executors cushion and pool 		 -- step.3
 	var ths int
 	if Apper.Cfg.ThreadPoolSize > 0 {
 		ths = Apper.Cfg.ThreadPoolSize

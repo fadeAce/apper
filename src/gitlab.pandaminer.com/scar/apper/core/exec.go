@@ -1,5 +1,7 @@
 package core
 
+import "gitlab.pandaminer.com/scar/apper/const"
+
 // this package unit is for executors to exec pipes
 // then assemble all data and make a transaction to store them
 
@@ -7,7 +9,7 @@ package core
 func StartPool(sum int) {
 	// create pipes step.1
 	for i := 0; i < sum; i++ {
-		p := &pipe{pipSeq:i}
+		p := &pipe{pipSeq: i, state: _const.PIP_IDLE}
 		PipPool.addPip(p)
 	}
 }

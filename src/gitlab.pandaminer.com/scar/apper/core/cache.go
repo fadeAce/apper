@@ -6,13 +6,13 @@ import (
 )
 
 var cacheCenter = func() cache {
-	return cache{data: make(map[string]cacheUnit)}
+	return cache{data: make(map[string]*cacheUnit)}
 }()
 
 type cache struct {
 	sync.RWMutex
 	// txnID - cacheUnit
-	data map[string]cacheUnit
+	data map[string]*cacheUnit
 }
 
 type unit struct {

@@ -14,7 +14,7 @@ type pool struct {
 type pipe struct {
 	sync.RWMutex
 	// if it's ready for taken
-	state bool
+	state int
 	txnID string
 	// this for what fragment it caught with
 	fragmentSeq int
@@ -49,6 +49,7 @@ func (t *task) MatchPIP() (result map[int]*pipe) {
 			// binding txnID to those pipes
 			mid.txnID = t.txID
 			result[index] = mid
+			t.schedule[index]=false
 			till++
 			if till == sum {
 				break
@@ -76,7 +77,7 @@ func count() (sum int, res map[int]*pipe) {
 	res = make(map[int]*pipe)
 	PipPool.Lock()
 	for seq, pip := range PipPool.pips {
-		if pip.state {
+		if pip.state == _const.PIP_IDLE {
 			res[seq] = pip
 			sum++
 		}
@@ -85,13 +86,21 @@ func count() (sum int, res map[int]*pipe) {
 	return sum, res
 }
 
-func (*task) release() {
+func (t *task) release() {
 
 }
 
 // task done involved a process that inject result from
 // fragments to cache layer.
 func (t *task) Done() string {
+	txnID := t.txID
+	cacheCenter.RLock()
+	cacheLayer := cacheCenter.data[txnID]
+	ch := cacheLayer.ch
+	cacheCenter.RUnlock()
+	// block here till works done
+	<-ch
+	// release the routines bond to counter task
 	t.release()
 	return t.txID
 }

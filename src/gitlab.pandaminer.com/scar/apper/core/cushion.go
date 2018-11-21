@@ -87,7 +87,7 @@ func Generate(
 		}
 	}
 	fragments.sum = counter
-	return &task{fragments, txnID, nil, time.Duration(timeout) * time.Second}
+	return &task{fragments, txnID, make(map[int]bool), time.Duration(timeout) * time.Second}
 }
 
 func PopTask() *task {
@@ -96,7 +96,7 @@ func PopTask() *task {
 	task := <-Panel.queue
 	cacheCenter.Lock()
 	defer cacheCenter.Unlock()
-	cacheCenter.data[task.txID] = cacheUnit{
+	cacheCenter.data[task.txID] = &cacheUnit{
 		ch:    make(chan interface{}),
 		sum:   task.fragments.sum,
 		unit:  make(map[int]unit),
