@@ -38,7 +38,9 @@ func Start(conf *typ.ApperConf) error {
 	// start listener 							 -- step.1
 	shutCh := make(chan interface{})
 	err = client.Listen(shutCh, apper)
-
+	if err != nil {
+		return err
+	}
 	// start notifier 			                 -- step.2
 	notifier := typ.NewNotifier()
 

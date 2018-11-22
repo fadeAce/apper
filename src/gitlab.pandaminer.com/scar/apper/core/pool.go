@@ -23,7 +23,9 @@ type pipe struct {
 }
 
 var PipPool = func() *pool {
-	p := &pool{}
+	p := &pool{
+		pips: make(map[int]*pipe),
+	}
 	return p
 }()
 

@@ -3,7 +3,6 @@ package storage
 import (
 	"database/sql"
 	_ "github.com/lib/pq"
-	"fmt"
 	"gitlab.pandaminer.com/scar/apper/logger"
 	"context"
 	"time"
@@ -30,7 +29,6 @@ func NewDatabase(dataSourceName string) (*Database, error) {
 		return nil, err
 	}
 	if err = d.scrapper.prepare(d.db); err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 	log.Info("complete storage setting")

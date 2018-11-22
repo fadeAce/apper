@@ -27,13 +27,13 @@ CREATE INDEX IF NOT EXISTS transaction_index ON source_raw(transaction_id);
 `
 
 const insertSourceSQL = "" +
-	"INSERT INTO source_raw(transaction_id, typ, key_str, val_str, val_binary, intime, state, des) VALUES ($1, $2, $3, $4, $5, $6, $7)"
+	"INSERT INTO source_raw(transaction_id, typ, key_str, val_str, val_binary, intime, state, des) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)"
 
 const selectSourceByUIDSQL = "" +
-	"SELECT content FROM source_raw WHERE transaction_id = $1 and typ = $2"
+	"SELECT val_str FROM source_raw WHERE transaction_id = $1 and typ = $2"
 
 const selectAllSQL = "" +
-	"SELECT content, typ FROM source_raw where transaction_id = $1"
+	"SELECT val_str, typ FROM source_raw where transaction_id = $1"
 
 const selectTxnSeqSQL = "" +
 	"SELECT nextval('transaction_stream_id')"

@@ -45,7 +45,5 @@ func Listen(ch chan interface{}, apper *types.Apperserver) (err error) {
 		case _const.CMD_LS:
 		}
 	})
-	// wait for signal to kill
-	<-ch
 	return
 }

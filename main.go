@@ -39,7 +39,10 @@ func main() {
 			if err != nil {
 				log.Info(err)
 			}
-			apper.Start(&conf)
+			err = apper.Start(&conf)
+			if err != nil {
+				log.Error(err)
+			}
 		}
 	}
 }

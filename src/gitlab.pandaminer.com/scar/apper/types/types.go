@@ -3,7 +3,8 @@ package types
 import (
 	"gitlab.pandaminer.com/scar/apper/storage"
 	"sync"
-	"golang.org/x/net/context"
+	"context"
+	"github.com/nats-io/go-nats"
 )
 
 type CmdJSON struct {
@@ -17,6 +18,7 @@ type Apperserver struct {
 	Cfg      *ApperConf
 	Ctx      context.Context
 	Database *storage.Database
+	nc       *nats.Conn
 }
 
 func (apperserver *Apperserver) Seq() int {
@@ -24,4 +26,10 @@ func (apperserver *Apperserver) Seq() int {
 	res := apperserver.Database.CoutSeq(apperserver.Ctx)
 	apperserver.Unlock()
 	return res
+}
+
+func (apperserver *Apperserver) Close() {
+	apperserver.Lock()
+	apperserver.nc.Close()
+	apperserver.Unlock()
 }
