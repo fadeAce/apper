@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"database/sql"
+	"github.com/lib/pq"
 )
 
 const sourceSchema = `
@@ -14,15 +15,19 @@ CREATE TABLE IF NOT EXISTS source_raw (
 	id 					BIGINT 	PRIMARY KEY DEFAULT nextval('source_stream_id'),
 	transaction_id 		TEXT 	NOT NULL,
 	typ 				TEXT 	NOT NULL,
-	content 			TEXT 	NOT NULL,
-	intime 				BIGINT 	NOT NULL
+	key_str 			TEXT 	NOT NULL,
+	val_str 			TEXT 	NOT NULL,
+	val_binary 			bytea 	NOT NULL,
+	intime 				BIGINT 	NOT NULL,
+	state    			TEXT 	NOT NULL,
+	des 				TEXT    NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS transaction_index ON source_raw(transaction_id);
 `
 
 const insertSourceSQL = "" +
-	"INSERT INTO source_raw(transaction_id, typ, content, intime) VALUES ($1, $2, $3, $4)"
+	"INSERT INTO source_raw(transaction_id, typ, key_str, val_str, val_binary, intime, state, des) VALUES ($1, $2, $3, $4, $5, $6, $7)"
 
 const selectSourceByUIDSQL = "" +
 	"SELECT content FROM source_raw WHERE transaction_id = $1 and typ = $2"
@@ -65,11 +70,20 @@ func (s *scrapperStatements) prepare(db *sql.DB) (err error) {
 	return
 }
 
-func (s *scrapperStatements) insertPresence(
-	ctx context.Context, tid, typ, cont string,
+func (s *scrapperStatements) insertFragment(
+	ctx context.Context,
+	txID, typ, key, cont string,
+	bi []byte,
 	intime int64,
+	state string,
+	des string,
 ) error {
-	if _, err := s.insertRawStmt.ExecContext(ctx, tid, typ, cont, intime); err != nil {
+	bt := pq.ByteaArray{}
+	err := bt.Scan(bi)
+	if err != nil {
+		return err
+	}
+	if _, err := s.insertRawStmt.ExecContext(ctx, txID, typ, key, cont, bt, intime, state, des); err != nil {
 		return nil
 	}
 	return nil
@@ -79,21 +93,3 @@ func (s *scrapperStatements) selectTxnSeq(ctx context.Context) int {
 	s.selectTxnSeqStmt.QueryRowContext(ctx).Scan(&res)
 	return res
 }
-
-//
-//func (s *scrapperStatements) selectAll() ([]interface{}, error) {
-//	rows, err := s.selectAllSourceStmt.Query()
-//	if err != nil {
-//		return nil, err
-//	}
-//	defer rows.Close()
-//	var result []interface{}
-//	//for rows.Next() {
-//	//	var presence authtypes.Presence
-//	//	if err = rows.Scan(&presence.UserID, &presence.State, &presence.StatusMsg, &presence.Mtime); err != nil {
-//	//		return nil, err
-//	//	}
-//	//	result = append(result, presence)
-//	//}
-//	return result, err
-//}

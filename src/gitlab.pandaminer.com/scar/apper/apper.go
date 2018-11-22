@@ -8,6 +8,7 @@ import (
 	"gitlab.pandaminer.com/scar/apper/core"
 	"gitlab.pandaminer.com/scar/apper/const"
 	"context"
+	"encoding/json"
 )
 
 var log = logger.Log
@@ -51,12 +52,14 @@ func Start(conf *typ.ApperConf) error {
 	core.StartPool(ths)
 
 	// start pool consuming service todo: WIP    -- step.4
-	StartService(notifier, conf)
+	StartService(apper.Ctx, notifier, conf, database)
 
 	return err
 }
 
-func StartService(notifier *typ.Notifier, conf *typ.ApperConf) {
+func StartService(
+	ctx context.Context, notifier *typ.Notifier, conf *typ.ApperConf, database *storage.Database,
+) {
 	// loop
 	for {
 		if false {
@@ -72,12 +75,22 @@ func StartService(notifier *typ.Notifier, conf *typ.ApperConf) {
 			task.RunPip(pip)
 			log.Debug("pip ", idx, " is running for task ", task.TransactionID())
 		}
-		// block till it's done
-		txID := task.Done()
-		// done marks the finish of task , and beginning of storage.999
-		task.Store()
-		// notify this work is over through the unified subject.
-		notifier.Notify(txID,nil)
-		log.Info("task ", txID, " is done !")
+		go func() {
+			// block till it's done, this is async block daemon process for task
+			txID := task.Done()
+			// done marks the finish of task , and beginning of storage.999
+			failure, err := task.Store(ctx, database)
+			if err != nil {
+				return
+			}
+			// notify this work is over through the unified subject.
+			fail := typ.Respond{
+				State:  false,
+				Falure: failure,
+			}
+			data, _ := json.Marshal(fail)
+			notifier.Notify(_const.TASK_TXN_PREFFIX+txID, data)
+			log.Info("task ", txID, " is done !")
+		}()
 	}
 }

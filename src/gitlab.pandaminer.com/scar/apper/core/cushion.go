@@ -164,9 +164,6 @@ func (t *task) RunPip(pip *pipe) {
 func (t *task) fetchFragment(i int) (frag fragment, taken bool) {
 	return t.fragments.data[i], t.fragments.data[i].taken
 }
-func (t *task) Store() {
-
-}
 
 func (t *task) check() {
 	t.RLock()

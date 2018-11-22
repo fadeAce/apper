@@ -22,3 +22,8 @@ type Command struct {
 	Configs ConfJ  `json:"config"`
 	Cmd     string `json:"cmd"`
 }
+
+type Respond struct {
+	State  bool              `json:"state"`
+	Falure map[string]string `json:"failure"`
+}
