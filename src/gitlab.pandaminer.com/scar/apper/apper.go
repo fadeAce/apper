@@ -35,11 +35,11 @@ func Start(conf *typ.ApperConf) error {
 	}
 	apper.Database = database
 	Apper = apper
-	// start listener todo: WIP					 -- step.1
+	// start listener 							 -- step.1
 	shutCh := make(chan interface{})
 	err = client.Listen(shutCh, apper)
 
-	// start notifier todo: WIP                  -- step.2
+	// start notifier 			                 -- step.2
 	notifier := typ.NewNotifier()
 
 	// start Executors cushion and pool 		 -- step.3
@@ -51,7 +51,7 @@ func Start(conf *typ.ApperConf) error {
 	}
 	core.StartPool(ths)
 
-	// start pool consuming service todo: WIP    -- step.4
+	// start pool consuming service 			 -- step.4
 	StartService(apper.Ctx, notifier, conf, database)
 
 	return err
