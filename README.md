@@ -36,20 +36,20 @@ if you want to run it in daemon mode as apper server please see ./apper -h for m
 ###### the architect of task on processing cushion area
 
 ```
-    SDK start work ---+ task ---+    +-------+
-         +                      |    |       |
-         |                      |    |       |
-         |                      +--+ |       | --+ pop task ---+
-         |                           |       |                 |
-         |                           +-------+                 |
-         |                            cushion                  +
-    release pipes                                           match pip
-         +                           +-------+                 |
-         |                           |       |              pip exec
-         |                           |       |                 |
-         +--- storage persist +----- |       | +-- caching ----+
-                                     |       |
-                                     +-------+
+    SDK start work ---+ task ---+    +-------+                               +---------+
+         +                +     |    |       |                               |         |
+         |                |     |    |       |                               |         |
+         |                |     +--+ |       | --+ pop task ---+             |  pipe   |
+         |              fail         |       |                 |             |         |
+         |                |          +-------+                 |             |  pool   |
+         |                +---------- cushion                  +             |    |    |
+    release pipes                                           match pip +------|----+    |
+         +                           +-------+                 |             |    |    |
+         |                           |       |              pip exec         |  TH(N)  |
+         |                           |       |                 |             |         |
+         +--- storage persist +----- |       | +-- caching ----+             |         |
+                                     |       |                               |         |
+                                     +-------+                               +---------+
                                       caching
 ```
 
