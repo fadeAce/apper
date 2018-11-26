@@ -33,3 +33,23 @@ if you want to run it in daemon mode as apper server please see ./apper -h for m
          +----------------- in progress
 ```
 
+###### the architect of task on processing cushion area
+
+```
+    SDK start work ---+ task ---+    +-------+
+         +                      |    |       |
+         |                      |    |       |
+         |                      +--+ |       | --+ pop task ---+
+         |                           |       |                 |
+         |                           +-------+                 |
+         |                            cushion                  +
+    release pipes                                           match pip
+         +                           +-------+                 |
+         |                           |       |              pip exec
+         |                           |       |                 |
+         +--- storage persist +----- |       | +-- caching ----+
+                                     |       |
+                                     +-------+
+                                      caching
+```
+
