@@ -23,13 +23,13 @@ if you want to run it in daemon mode as apper server please see ./apper -h for m
 
 ```
         pip ---+ task +------- finish
-         +		  |				+
-         |		  |				|
-         |		  +				|
-         |		fragment ---+ done
-         |						|
-         |						|
-         |						+
+         +        |             +
+         |        |             |
+         |        +             |
+         |      fragment ---+ done
+         |                      |
+         |                      |
+         |                      +
          +----------------- in progress
 ```
 
