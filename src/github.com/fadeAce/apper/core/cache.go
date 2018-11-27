@@ -2,7 +2,7 @@ package core
 
 import (
 	"sync"
-	"gitlab.pandaminer.com/scar/apper/const"
+	"github.com/fadeAce/apper/const"
 )
 
 var cacheCenter = func() cache {

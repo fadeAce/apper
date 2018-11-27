@@ -3,10 +3,10 @@ package storage
 import (
 	"database/sql"
 	_ "github.com/lib/pq"
-	"gitlab.pandaminer.com/scar/apper/logger"
+	"github.com/fadeAce/apper/logger"
 	"context"
 	"time"
-	"gitlab.pandaminer.com/scar/apper/const"
+	"github.com/fadeAce/apper/const"
 	"strings"
 )
 

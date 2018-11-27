@@ -2,11 +2,11 @@ package client
 
 import (
 	"github.com/nats-io/go-nats"
-	"gitlab.pandaminer.com/scar/apper/const"
-	"gitlab.pandaminer.com/scar/apper/types"
-	"gitlab.pandaminer.com/scar/apper/logger"
+	"github.com/fadeAce/apper/const"
+	"github.com/fadeAce/apper/types"
+	"github.com/fadeAce/apper/logger"
 	"encoding/json"
-	"gitlab.pandaminer.com/scar/apper/core"
+	"github.com/fadeAce/apper/core"
 )
 
 var log = logger.Log

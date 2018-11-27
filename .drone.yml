@@ -1,6 +1,6 @@
 workspace:
   base: /go
-  path: src/gitlab.pandaminer.com/scar/apper.git
+  path: src/github.com/fadeAce/apper.git
 
 pipeline:
   build:

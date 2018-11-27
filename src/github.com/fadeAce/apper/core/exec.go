@@ -1,8 +1,8 @@
 package core
 
 import (
-	"gitlab.pandaminer.com/scar/apper/const"
-	"gitlab.pandaminer.com/scar/apper/storage"
+	"github.com/fadeAce/apper/const"
+	"github.com/fadeAce/apper/storage"
 	"context"
 )
 

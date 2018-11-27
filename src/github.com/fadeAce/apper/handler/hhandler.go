@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"gitlab.pandaminer.com/scar/apper/logger"
+	"github.com/fadeAce/apper/logger"
 	"github.com/gocolly/colly"
 	"time"
 )

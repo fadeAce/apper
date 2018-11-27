@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"time"
 	"context"
-	"gitlab.pandaminer.com/scar/apper/logger"
-	"gitlab.pandaminer.com/scar/apper/types"
-	"gitlab.pandaminer.com/scar/apper/const"
-	"gitlab.pandaminer.com/scar/apper/storage"
-	"gitlab.pandaminer.com/scar/apper/handler"
+	"github.com/fadeAce/apper/logger"
+	"github.com/fadeAce/apper/types"
+	"github.com/fadeAce/apper/const"
+	"github.com/fadeAce/apper/storage"
+	"github.com/fadeAce/apper/handler"
 	"sync"
 )
 

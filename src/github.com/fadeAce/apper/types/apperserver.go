@@ -2,7 +2,7 @@ package types
 
 import (
 	"github.com/sirupsen/logrus"
-	"gitlab.pandaminer.com/scar/apper/storage"
+	"github.com/fadeAce/apper/storage"
 )
 
 func (*Apperserver) Start() {

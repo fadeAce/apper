@@ -3,9 +3,9 @@ package main
 import (
 	sh "./shell"
 	"flag"
-	"gitlab.pandaminer.com/scar/apper"
-	"gitlab.pandaminer.com/scar/apper/logger"
-	"gitlab.pandaminer.com/scar/apper/types"
+	"github.com/fadeAce/apper"
+	"github.com/fadeAce/apper/logger"
+	"github.com/fadeAce/apper/types"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"time"

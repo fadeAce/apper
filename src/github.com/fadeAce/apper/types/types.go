@@ -1,7 +1,7 @@
 package types
 
 import (
-	"gitlab.pandaminer.com/scar/apper/storage"
+	"github.com/fadeAce/apper/storage"
 	"sync"
 	"context"
 	"github.com/nats-io/go-nats"
